@@ -1,7 +1,7 @@
 import { connectToDatabase } from "../dbConnect";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import cookie from "cookie";
+import { serialize } from "cookie";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -15,9 +15,16 @@ export default async function handler(req, res) {
     }
 
     // ✅ Ensure database connection
-    const { db } = await connectToDatabase();
-    const user = await db.collection("users").findOne({ email });
+    let db;
+    try {
+      const connection = await connectToDatabase();
+      db = connection.db;
+    } catch (dbError) {
+      console.error("❌ Database connection error:", dbError);
+      return res.status(500).json({ error: "Database connection failed" });
+    }
 
+    const user = await db.collection("users").findOne({ email });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -29,20 +36,21 @@ export default async function handler(req, res) {
     }
 
     // ✅ Use JWT_SECRET from environment variables
-    if (!process.env.JWT_SECRET) {
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
       console.error("❌ JWT_SECRET is not defined in environment variables!");
       return res.status(500).json({ error: "Server misconfiguration: JWT_SECRET missing" });
     }
 
     const tokenPayload = { userId: user._id, role: user.role };
     const tokenExpiry = user.role === "admin" ? "6h" : "8h";
-    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: tokenExpiry });
+    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: tokenExpiry });
 
     // ✅ Secure cookies for production
     const tokenExpiryInSeconds = tokenExpiry === "6h" ? 6 * 60 * 60 : 8 * 60 * 60;
     res.setHeader(
       "Set-Cookie",
-      cookie.serialize("token", token, {
+      serialize("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Secure in production
         sameSite: "strict",
