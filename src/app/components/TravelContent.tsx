@@ -1,24 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import {
-  Globe,
   MapPin,
-  Sun,
-  CloudRain,
-  Snowflake,
-  Wind,
   Search,
   Heart,
   Clock,
-  Plane,
-  Hotel,
   Compass,
-  Camera,
   ArrowRight,
   Award,
   Star,
   PhoneCall,
-  Check
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -126,7 +117,7 @@ const TravelContent = () => {
       toast.success("Successfully subscribed to newsletter!");
       setEmail("");
     } catch (error) {
-      toast.error("Failed to subscribe. Please try again.");
+      toast.error(error as string || "Failed to subscribe. Please try again.");
     } finally {
       setSubscribing(false);
     }

@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
 import dbConnect from '../../dbConnect';
 
 export default async function handler(req, res) {

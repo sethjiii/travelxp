@@ -97,7 +97,7 @@ const AllPackagesPage = () => {
       {/* No Results Found */}
       {filteredPackages.length === 0 && (
         <div className="text-center text-gray-600">
-          <p>No packages found for "{searchQuery}".</p>
+          <p>No packages found for &quot;{searchQuery}&quot;.</p>
         </div>
       )}
     </div>

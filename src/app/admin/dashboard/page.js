@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Plus, Minus, Upload, PackageOpen, Calendar, DollarSign, Clock, Image as ImageIcon, Hotel, MapPin } from 'lucide-react';
+import { Plus, Minus, Upload, PackageOpen, DollarSign, Clock, Image as ImageIcon, Hotel } from 'lucide-react';
 
 const AdminTravelPackage = () => {
   const [activeTab, setActiveTab] = useState('basic');

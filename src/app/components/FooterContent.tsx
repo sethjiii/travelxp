@@ -1,7 +1,6 @@
 "use client"
 import React from 'react';
 import { 
-  Globe, 
   MapPin, 
   Mail, 
   Phone, 
@@ -11,7 +10,6 @@ import {
   Linkedin,
   Plane,
   Heart,
-  MessageCircle,
   Clock
 } from 'lucide-react';
 

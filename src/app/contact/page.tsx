@@ -81,7 +81,7 @@ const ContactUsPage: React.FC = () => {
         <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-blue-700 mb-6">Get in Touch</h2>
           <p className="text-lg text-gray-700 mb-4">
-            We're here to help! Please feel free to reach out with any inquiries or feedback you may have.
+            We&apos;re here to help! Please feel free to reach out with any inquiries or feedback you may have.
           </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

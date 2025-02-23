@@ -20,6 +20,7 @@ const BookingsPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -44,8 +45,8 @@ const BookingsPage = () => {
 
         const data: Booking[] = await response.json();
         setBookings(data);
-      } catch (error: any) {
-        setError(error.message || "Failed to fetch bookings.");
+      } catch (error) {
+        setError(error as string || "Failed to fetch bookings.");
       } finally {
         setLoading(false);
       }

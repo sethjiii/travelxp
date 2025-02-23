@@ -46,7 +46,6 @@ interface BookingDetails {
 
 const ConfirmationPage = () => {
   const params = useParams();
-  const router = useRouter();
   const id = params?.id as string;
 
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
@@ -158,6 +157,7 @@ const ConfirmationPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setSuccessMessage("Booking done! Our team will reach out to you soon.");
       }
     } catch (error) {

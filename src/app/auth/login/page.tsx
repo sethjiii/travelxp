@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const { login, user } = useAuth(); // Destructure login function from context
-  const router = useRouter();
+  console.log(user);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [role, setRole] = useState<string | null>(null); // Role state
+  console.log(role);
 
   // Retrieve role from localStorage on the client side
   useEffect(() => {
@@ -132,7 +133,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/auth/signup" className="text-blue-600 hover:text-blue-800 font-medium">
                 Sign up
               </Link>

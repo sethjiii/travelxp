@@ -79,7 +79,7 @@ export default async function handler(req, res) {
 
     // await newPackage.save();
     const result = await db.collection('TravelPackage').insertOne(newPackage);
-
+    console.log(result)
     res.status(201).json({ message: 'Travel package added successfully', package: newPackage });
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {

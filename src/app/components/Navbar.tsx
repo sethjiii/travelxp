@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { MapPin, Globe, Menu, X, Search, User, Phone } from "lucide-react";
+import { MapPin, Globe, Menu, X, User, Phone } from "lucide-react";
 import { useAuth } from "../../Auth/AuthProvider"; // Import the custom Auth hook
 import Image from "next/image";
 
@@ -12,6 +12,7 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   console.log("from navbar");
   console.log(user?.role);
+  console.log(logout);
 
 
   // Ensures client-side only logic
