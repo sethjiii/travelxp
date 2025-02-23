@@ -2,30 +2,50 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
+interface Booking {
+  _id: string;
+  user?: {
+    name: string;
+  };
+  package?: {
+    name: string;
+  };
+  startDate: string;
+  numberOfTravelers: number;
+  totalAmount: number;
+}
+
 const BookingsPage = () => {
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Authentication token not found. Please log in.");
+          setLoading(false);
+          return;
+        }
+
         const response = await fetch("/api/admin/bookings", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // assuming token is stored in localStorage
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          setBookings(data);
-        } else {
+        if (!response.ok) {
           const errorData = await response.json();
-          setError(errorData.error || "Something went wrong!");
+          throw new Error(errorData.error || "Something went wrong!");
         }
-      } catch (error) {
-        setError("Failed to fetch bookings.");
+
+        const data: Booking[] = await response.json();
+        setBookings(data);
+      } catch (error: any) {
+        setError(error.message || "Failed to fetch bookings.");
       } finally {
         setLoading(false);
       }
@@ -79,7 +99,7 @@ const BookingsPage = () => {
               </table>
             </div>
           ) : (
-            <p>No bookings available.</p>
+            <p className="text-center text-gray-600">No bookings available.</p>
           )}
         </div>
       )}

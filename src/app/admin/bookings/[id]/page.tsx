@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { ChevronDown, ChevronUp, User, Package, Calendar, Phone, Star, MapPin } from "lucide-react";
+import {User, Package, Calendar, Phone, Star, MapPin } from "lucide-react";
 
 interface Booking {
   user: {
@@ -75,7 +75,7 @@ const BookingDetailsPage = () => {
           setError(errorData.error || "Something went wrong!");
         }
       } catch (error) {
-        setError("Failed to fetch booking details.");
+        setError(error as string);
       } finally {
         setLoading(false);
       }
