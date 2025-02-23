@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import {useRouter} from "next/navigation";
+import Image from "next/image";
 
 // Interfaces remain the same as your original code
 type Availability = {
@@ -184,10 +185,12 @@ const TravelPackageDisplay = () => {
     <div className="max-w-7xl mx-auto p-4 space-y-8">
       {/* Hero Section */}
       <div className="relative h-[60vh] rounded-xl overflow-hidden">
-        <img 
+        <Image 
           src={packageData.images[0]} 
           alt={packageData.name}
           className="w-full h-full object-cover"
+          width={100}
+          height={100}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-8">
@@ -396,10 +399,11 @@ const TravelPackageDisplay = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {packageData.images.map((image, index) => (
                 <div key={index} className="relative aspect-[4/3] rounded-lg overflow-hidden">
-                  <img 
+                  <Image
                     src={image} 
                     alt={`${packageData.name} - Image ${index + 1}`}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    fill
                   />
                 </div>
               ))}

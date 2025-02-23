@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import { useAuth } from "../../Auth/AuthProvider";
-import { MapPin, Mail, Phone, LogOut } from "lucide-react";
+import { Mail, Phone, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type User = {
   email: string;
@@ -37,9 +38,11 @@ const UserProfile = () => {
             {/* Profile Avatar */}
             <div className="absolute -bottom-12 left-8">
               <div className="relative">
-                <img
+                <Image
                   src={user?.avatarUrl || "/api/placeholder/100/100"}
                   alt="Profile"
+                  width={24}
+                  height={24}
                   className="h-24 w-24 rounded-full ring-4 ring-white object-cover"
                 />
                 {!user?.avatarUrl && (

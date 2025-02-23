@@ -6,7 +6,6 @@ import { Mail, Lock, Eye, EyeOff, Plane } from "lucide-react";
 import Link from "next/link";
 import { Input } from "../../components/InputProps";
 import { useAuth } from "../../../Auth/AuthProvider";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const { login, user } = useAuth(); // Destructure login function from context

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 
 interface TravelPackage {
   _id: string;
@@ -188,10 +189,11 @@ const ConfirmationPage = () => {
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Hero Image Section */}
         <div className="relative rounded-xl overflow-hidden shadow-xl">
-          <img 
+          <Image
             src={packageData.images[0]} 
             alt="Travel Destination" 
             className="w-full h-72 sm:h-96 object-cover"
+            fill
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60"></div>
           <h1 className="absolute bottom-8 left-8 text-3xl sm:text-4xl font-bold text-white leading-tight">

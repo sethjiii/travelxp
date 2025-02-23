@@ -64,7 +64,6 @@ const testimonials: Testimonial[] = [
 ];
 
 const TravelContent = () => {
-  const [selectedMood, setSelectedMood] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [priceRange, setPriceRange] = useState<string>("all");
   const [packages, setPackages] = useState<TravelPackage[]>([]);
@@ -72,7 +71,6 @@ const TravelContent = () => {
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [subscribing, setSubscribing] = useState(false);
-  const [destination, setDestination] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("popularity");
 
   // Fetch packages from backend
@@ -93,7 +91,7 @@ const TravelContent = () => {
     const popularPackages = [...packages]
     .sort((a, b) => b.likes - a.likes)
     .slice(0, 6);
-
+    console.log(popularPackages)
     fetchPackages();
   }, []);
 

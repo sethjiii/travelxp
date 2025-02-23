@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Plus, Minus, Upload, PackageOpen, DollarSign, Clock, Image as ImageIcon, Hotel } from 'lucide-react';
+import Image from 'next/image';
 
 const AdminTravelPackage = () => {
   const [activeTab, setActiveTab] = useState('basic');
@@ -487,10 +488,11 @@ const AdminTravelPackage = () => {
                 <div className="grid grid-cols-4 gap-4">
                   {formData.images.map((img, index) => (
                     <div key={index} className="relative group">
-                      <img
+                      <Image
                         src={img}
                         alt={`Preview ${index + 1}`}
                         className="w-full h-32 object-cover rounded-lg"
+                        fill
                       />
                       <button
                         type="button"

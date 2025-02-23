@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { DollarSign, Star } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 // Define the structure of a package
 interface Package {
@@ -67,9 +68,11 @@ const AllPackagesPage = () => {
             className="overflow-hidden rounded-lg shadow-lg bg-white"
           >
             <div className="relative h-48">
-              <img
+              <Image
                 src={pkg.images[0]}
                 alt={pkg.name}
+                width={100}
+                height={100}
                 className="w-full h-full object-cover"
               />
             </div>
