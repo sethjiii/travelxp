@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
-
-const uri = "mongodb+srv://jaynrk2002:pQdvpeodL8bzPNLS@cluster0.eqsuf.mongodb.net/?retryWrites=true&w=majority";
+const uri=process.env.MONGO_URI;
 let cachedClient = null;
 let cachedDb = null;
 
