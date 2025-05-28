@@ -7,6 +7,10 @@ const travelPackageSchema = new mongoose.Schema(
       type: String,
       required: true, // Ensures name is mandatory
     },
+    places: {
+      type: String,
+      required: true, // Ensures places is mandatory
+    },
     description: {
       type: String,
       required: true, // Ensures description is mandatory

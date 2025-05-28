@@ -2,67 +2,67 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 // Interfaces remain the same as your original code
 type Availability = {
-    startDate: string;
-    endDate: string;
-  };
+  startDate: string;
+  endDate: string;
+};
 
 
 
 interface Activity {
-    name: string;
-    time: string;
-    additionalDetails: string;
-  }
-  
-  interface ItineraryItem {
-    day: number;
-    title: string;
-    description: string;
-    stay: string;
-    activities: Activity[];
-  }
-  
-  interface Review {
-    username: string;
-    rating: number;
-    review: string;
-    createdAt: string;
-  }
-  
-  interface Comment {
-    username: string;
-    comment: string;
-    createdAt: string;
-  }
-  
-  interface TravelPackage {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    currency: string;
-    duration: string;
-    highlights: string[];
-    itinerary: ItineraryItem[];
-    images: string[];
-    rating: number;
-    reviews: Review[];
-    comments: Comment[];
-    likes: number;
-    isLiked: boolean;
-    index:number;
-    item:string;
-    exclusions:string[];
-    inclusions:string[];
-    availability:Availability;
-  }
+  name: string;
+  time: string;
+  additionalDetails: string;
+}
 
-  
+interface ItineraryItem {
+  day: number;
+  title: string;
+  description: string;
+  stay: string;
+  activities: Activity[];
+}
+
+interface Review {
+  username: string;
+  rating: number;
+  review: string;
+  createdAt: string;
+}
+
+interface Comment {
+  username: string;
+  comment: string;
+  createdAt: string;
+}
+
+interface TravelPackage {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  duration: string;
+  highlights: string[];
+  itinerary: ItineraryItem[];
+  images: string[];
+  rating: number;
+  reviews: Review[];
+  comments: Comment[];
+  likes: number;
+  isLiked: boolean;
+  index: number;
+  item: string;
+  exclusions: string[];
+  inclusions: string[];
+  availability: Availability;
+}
+
+
 
 const TravelPackageDisplay = () => {
   const params = useParams();
@@ -74,7 +74,7 @@ const TravelPackageDisplay = () => {
   const [newReview, setNewReview] = useState({ rating: 0, review: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
-  const router=useRouter()
+  const router = useRouter()
   useEffect(() => {
     const fetchPackageData = async () => {
       if (!id) return;
@@ -185,8 +185,8 @@ const TravelPackageDisplay = () => {
     <div className="max-w-7xl mx-auto p-4 space-y-8">
       {/* Hero Section */}
       <div className="relative h-[60vh] rounded-xl overflow-hidden">
-        <Image 
-          src={packageData.images[0]} 
+        <Image
+          src={packageData.images[0]}
           alt={packageData.name}
           className="w-full h-full object-cover"
           width={100}
@@ -237,13 +237,13 @@ const TravelPackageDisplay = () => {
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-md">
-          <button 
+          <button
             onClick={handleLike}
             className={`w-full flex items-center justify-center gap-2 py-2 rounded-md
                      transition-colors duration-200
-                     ${packageData.isLiked 
-                       ? "bg-blue-600 text-white" 
-                       : "bg-blue-50 text-blue-600 hover:bg-blue-100"}`}
+                     ${packageData.isLiked
+                ? "bg-blue-600 text-white"
+                : "bg-blue-50 text-blue-600 hover:bg-blue-100"}`}
           >
             {packageData.isLiked ? "❤️" : "🤍"} {packageData.likes} Likes
           </button>
@@ -259,8 +259,8 @@ const TravelPackageDisplay = () => {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 font-medium capitalize transition-colors duration-200
                         ${activeTab === tab
-                          ? "text-blue-600 border-b-2 border-blue-600"
-                          : "text-gray-500 hover:text-gray-700"}`}
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-500 hover:text-gray-700"}`}
             >
               {tab}
             </button>
@@ -314,33 +314,33 @@ const TravelPackageDisplay = () => {
 
             {/* Availability */}
             <div className="bg-white text-blue-600 p-6 rounded-lg shadow-md">
-  <h2 className="text-xl font-semibold mb-4">Availability</h2>
-  <div className="flex flex-wrap gap-6">
-    <div>
-      <p className="text-sm text-gray-500">Start Date</p>
-      <p className="font-medium">
-        {new Date(packageData.availability.startDate).toLocaleDateString()}
-      </p>
-    </div>
-    <div>
-      <p className="text-sm text-gray-500">End Date</p>
-      <p className="font-medium">
-        {new Date(packageData.availability.endDate).toLocaleDateString()}
-      </p>
-    </div>
-  </div>
+              <h2 className="text-xl font-semibold mb-4">Availability</h2>
+              <div className="flex flex-wrap gap-6">
+                <div>
+                  <p className="text-sm text-gray-500">Start Date</p>
+                  <p className="font-medium">
+                    {new Date(packageData.availability.startDate).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">End Date</p>
+                  <p className="font-medium">
+                    {new Date(packageData.availability.endDate).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
 
-  {/* Check if the package is available */}
-  {new Date(packageData.availability.startDate) <= new Date() &&
-   new Date(packageData.availability.endDate) >= new Date() && (
-    <button
-      onClick={handleBookNow}
-      className="mt-4 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
-    >
-      Book Now
-    </button>
-  )}
-</div>
+              {/* Check if the package is available */}
+              {new Date(packageData.availability.startDate) <= new Date() &&
+                new Date(packageData.availability.endDate) >= new Date() && (
+                  <button
+                    onClick={handleBookNow}
+                    className="mt-4 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+                  >
+                    Book Now
+                  </button>
+                )}
+            </div>
 
           </div>
         )}
@@ -353,10 +353,10 @@ const TravelPackageDisplay = () => {
                 <div key={index} className="relative pl-8 pb-8">
                   {/* Timeline line */}
                   <div className="absolute left-0 top-0 bottom-0 w-px bg-blue-200"></div>
-                  
+
                   {/* Timeline dot */}
                   <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-blue-500"></div>
-                  
+
                   <div className="bg-white rounded-lg border p-6">
                     <div className="flex flex-wrap justify-between items-center gap-4 mb-4">
                       <h3 className="text-xl font-semibold">Day {day.day}: {day.title}</h3>
@@ -365,11 +365,11 @@ const TravelPackageDisplay = () => {
                       </span>
                     </div>
                     <p className="text-gray-600 mb-6">{day.description}</p>
-                    
+
                     <div className="space-y-4">
                       {day.activities.map((activity, actIndex) => (
-                        <div key={actIndex} 
-                             className="flex flex-col md:flex-row md:items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                        <div key={actIndex}
+                          className="flex flex-col md:flex-row md:items-center gap-4 p-4 bg-gray-50 rounded-lg">
                           <div className="md:w-1/6">
                             <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                               {activity.time}
@@ -400,7 +400,7 @@ const TravelPackageDisplay = () => {
               {packageData.images.map((image, index) => (
                 <div key={index} className="relative aspect-[4/3] rounded-lg overflow-hidden">
                   <Image
-                    src={image} 
+                    src={image}
                     alt={`${packageData.name} - Image ${index + 1}`}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     fill
@@ -422,9 +422,8 @@ const TravelPackageDisplay = () => {
                     <button
                       key={star}
                       onClick={() => setNewReview(prev => ({ ...prev, rating: star }))}
-                      className={`text-2xl ${
-                        star <= newReview.rating ? "text-yellow-400" : "text-gray-300"
-                      }`}
+                      className={`text-2xl ${star <= newReview.rating ? "text-yellow-400" : "text-gray-300"
+                        }`}
                     >
                       ⭐
                     </button>))}
@@ -462,9 +461,8 @@ const TravelPackageDisplay = () => {
                           {Array.from({ length: 5 }).map((_, i) => (
                             <span
                               key={i}
-                              className={`text-lg ${
-                                i < review.rating ? "text-yellow-400" : "text-gray-300"
-                              }`}
+                              className={`text-lg ${i < review.rating ? "text-yellow-400" : "text-gray-300"
+                                }`}
                             >
                               ⭐
                             </span>
