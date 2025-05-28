@@ -80,7 +80,8 @@ const TravelContent = () => {
         const response = await fetch("/api/packages");
         if (!response.ok) throw new Error("Failed to fetch packages");
         const data = await response.json();
-        setPackages(data);
+        console.log(data)
+        setPackages(data.packages);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {

@@ -1,4 +1,5 @@
-import { connectToDatabase } from '../dbConnect'; // adjust path
+import dbConnect from '../dbConnect';  // Adjust if needed
+import Destination from '../../../models/Destination'; // Your Mongoose Destination model
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -6,15 +7,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Connect to DB
-    const { db } = await connectToDatabase();
+    await dbConnect();
 
-    // Fetch all destinations sorted by createdAt descending
-    const destinations = await db
-      .collection('destinations')
-      .find({})
+    const destinations = await Destination.find({})
+      .populate('packages') // This will populate the referenced TravelPackage documents
       .sort({ createdAt: -1 })
-      .toArray();
+      .exec();
 
     return res.status(200).json({ destinations });
   } catch (error) {
