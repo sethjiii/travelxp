@@ -53,7 +53,7 @@ const renderStars = (rating = 4.5) => {
       try {
         const response = await fetch("/api/packages");
         const data = await response.json();
-        setPackages(data);
+        setPackages(data.packages);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching packages:", error);

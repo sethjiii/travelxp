@@ -16,7 +16,6 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: false, // Exclude password from query results by default
     },
     phone: {
       type: String,

@@ -1,81 +1,69 @@
-import { connectToDatabase } from "../../dbConnect";
-import { ObjectId } from "mongodb";
+import dbConnect from "../../dbConnect";
+import TravelPackage from "../../../../models/TravelPackages";
+import mongoose from "mongoose";
 
 export default async function handler(req, res) {
-  try {
-    // Establish a connection to the database
-    const { db } = await connectToDatabase();
+  await dbConnect(); // Ensure DB connection
 
-    const { method } = req;
-    const { id } = req.query;
+  const { method } = req;
+  const { id } = req.query;
 
-    console.log("Package ID:", id);
+  console.log("Package ID:", id);
 
-    // Validate the provided ID
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Invalid ID format" });
-    }
+  // Validate MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
 
-    const objectId = new ObjectId(id);
-
-    switch (method) {
-      case "GET":
-        try {
-          const travelPackage = await db.collection("TravelPackage").findOne({ _id: objectId });
-          console.log("Fetched Package:", travelPackage);
-
-          if (!travelPackage) {
-            return res.status(404).json({ error: "Package not found" });
-          }
-
-          res.status(200).json(travelPackage);
-        } catch (error) {
-          console.error("Error fetching package:", error);
-          res.status(500).json({ error: "Failed to fetch package" });
+  switch (method) {
+    case "GET":
+      try {
+        const travelPackage = await TravelPackage.findById(id);
+        if (!travelPackage) {
+          return res.status(404).json({ error: "Package not found" });
         }
-        break;
+        res.status(200).json(travelPackage);
+      } catch (error) {
+        console.error("Error fetching package:", error);
+        res.status(500).json({ error: "Failed to fetch package" });
+      }
+      break;
 
-      case "PUT":
-        try {
-          const updatedPackage = await db
-            .collection("TravelPackage")
-            .findOneAndUpdate(
-              { _id: objectId },
-              { $set: req.body },
-              { returnDocument: "after" } // Ensures the updated document is returned
-            );
+    case "PUT":
+      try {
+        const updatedPackage = await TravelPackage.findByIdAndUpdate(
+          id,
+          { $set: req.body },
+          { new: true } // Return updated doc
+        );
 
-          if (!updatedPackage.value) {
-            return res.status(404).json({ error: "Package not found" });
-          }
-
-          res.status(200).json(updatedPackage.value);
-        } catch (error) {
-          console.error("Error updating package:", error);
-          res.status(400).json({ error: "Failed to update package" });
+        if (!updatedPackage) {
+          return res.status(404).json({ error: "Package not found" });
         }
-        break;
 
-      case "DELETE":
-        try {
-          const deletedPackage = await db.collection("TravelPackage").deleteOne({ _id: objectId });
+        res.status(200).json(updatedPackage);
+      } catch (error) {
+        console.error("Error updating package:", error);
+        res.status(400).json({ error: "Failed to update package" });
+      }
+      break;
 
-          if (!deletedPackage.deletedCount) {
-            return res.status(404).json({ error: "Package not found" });
-          }
+    case "DELETE":
+      try {
+        const deleted = await TravelPackage.findByIdAndDelete(id);
 
-          res.status(200).json({ message: "Package deleted successfully" });
-        } catch (error) {
-          console.error("Error deleting package:", error);
-          res.status(500).json({ error: "Failed to delete package" });
+        if (!deleted) {
+          return res.status(404).json({ error: "Package not found" });
         }
-        break;
 
-      default:
-        res.status(405).json({ error: `Method ${method} not allowed` });
-    }
-  } catch (error) {
-    console.error("Database operation failed:", error);
-    res.status(500).json({ error: "Internal server error" });
+        res.status(200).json({ message: "Package deleted successfully" });
+      } catch (error) {
+        console.error("Error deleting package:", error);
+        res.status(500).json({ error: "Failed to delete package" });
+      }
+      break;
+
+    default:
+      res.status(405).json({ error: `Method ${method} not allowed` });
   }
 }

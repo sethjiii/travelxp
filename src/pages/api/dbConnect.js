@@ -1,51 +1,33 @@
-import { MongoClient } from 'mongodb';
-const uri=process.env.MONGO_URI;
-let cachedClient = null;
-let cachedDb = null;
+import mongoose from 'mongoose';
 
-export default async function connectToDatabase() {
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  throw new Error('❌ Please define the MONGO_URI environment variable');
+}
+
+let isConnected = false; // Global cache for connection state
+
+export default async function dbConnect() {
+  if (isConnected) {
+    return;
+  }
+
   try {
-    // Check if the cached connection is available
-    if (cachedClient && cachedDb) {
-      // Check if the cached client is still connected by pinging
-      const admin = cachedDb.admin();
-      const serverStatus = await admin.ping();
-      if (serverStatus) {
-        console.log("Using cached MongoDB connection.");
-        return { client: cachedClient, db: cachedDb };
-      } else {
-        // If cached client is disconnected, clear cache and reconnect
-        console.log("Cached MongoDB client is disconnected, reconnecting...");
-        cachedClient = null;
-        cachedDb = null;
-      }
-    }
-
-    // Initialize the MongoDB client with connection options
-    const client = new MongoClient(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
-      socketTimeoutMS: 30000, // Increase socket timeout
+    const db = await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 30000, // Optional but good for production
+      socketTimeoutMS: 30000,
     });
 
-    // Connect to the MongoDB server
-    await client.connect();
+    isConnected = db.connections[0].readyState === 1;
 
-    // Specify the database name
-    const db = client.db('traveleasy'); // Replace 'traveleasy' with your actual database name if different
-
-    // Cache the client and db for reuse
-    cachedClient = client;
-    cachedDb = db;
-
-    console.log("New MongoDB connection established.");
-    return { client, db };
+    if (isConnected) {
+      console.log('✅ MongoDB connected using Mongoose');
+    } else {
+      console.log('⚠️ MongoDB connection failed');
+    }
   } catch (error) {
-    // Log and rethrow the error for debugging
-    console.error("Error connecting to MongoDB:", error);
+    console.error('❌ MongoDB connection error:', error);
     throw error;
   }
 }
-
-export { connectToDatabase };

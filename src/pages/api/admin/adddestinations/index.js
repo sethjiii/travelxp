@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 import dbConnect from '../../dbConnect';
+import Destination from '../../../../models/Destination'; // adjust path to your model
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -14,8 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Destructure db from your dbConnect function
-    const { db } = await dbConnect();
+    await dbConnect();
 
     // JWT validation
     const authHeader = req.headers.authorization;
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
+    } catch {
       return res.status(401).json({ error: 'Invalid or expired token' });
     }
 
@@ -67,22 +67,26 @@ export default async function handler(req, res) {
       }
     }
 
-    // Prepare destination document
-    const newDestination = {
+    // Check if city already exists (unique)
+    const existing = await Destination.findOne({ city: city.trim() });
+    if (existing) {
+      return res.status(409).json({ error: 'City already exists' });
+    }
+
+    // Create and save the new destination
+    const destination = new Destination({
       city: city.trim(),
       description: description.trim(),
       packages,
+      image: uploadedImages[0] || '', // If you want a main image field
       images: uploadedImages,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    });
 
-    // Insert into DB
-    const result = await db.collection('destinations').insertOne(newDestination);
+    await destination.save();
 
     return res.status(201).json({
       message: 'Destination added successfully',
-      destinationId: result.insertedId,
+      destinationId: destination._id,
     });
   } catch (error) {
     console.error('Error adding destination:', error);
