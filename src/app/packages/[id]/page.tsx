@@ -182,169 +182,194 @@ const TravelPackageDisplay = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 space-y-8">
+    <div className="max-w-7xl mx-auto space-y-8">
       {/* Hero Section */}
-      <div className="relative h-[60vh] rounded-xl overflow-hidden">
+      <div className="relative h-[75vh] w-full overflow-hidden shadow-lg">
         <Image
-          src={packageData.images[0]}
+          src={packageData.images[0] || "/placeholder.jpg"}
           alt={packageData.name}
-          className="w-full h-full object-cover"
-          width={100}
-          height={100}
+          className="absolute inset-0 w-full h-full object-cover"
+          width={1920}
+          height={1080}
+          priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{packageData.name}</h1>
-          <p className="text-xl text-white/90 mb-6">{packageData.description}</p>
-          <div className="flex flex-wrap gap-4">
-            <span className="px-4 py-2 bg-white/20 rounded-full text-white backdrop-blur-sm">
-              {packageData.duration}
-            </span>
-            <span className="px-4 py-2 bg-white/20 rounded-full text-white backdrop-blur-sm">
-              {packageData.currency} {packageData.price}
-            </span>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
+
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-6">
+          <h1 className="text-4xl md:text-6xl font-extrabold font-serif tracking-widest text-white drop-shadow-lg animate-fade-in">
+            {packageData.name}
+          </h1>
+          <p className="text-lg px-16 tracking-wide leading-relaxed">
+            {packageData.description}
+          </p>
+          {/* <p className="mt-4 text-white/90 text-lg md:text-xl max-w-2xl animate-fade-in delay-150">
+            {packageData.description}
+          </p> */}
+
+          <div className="mt-6 flex flex-wrap justify-center gap-4 animate-fade-in delay-300">
+            {/* Duration Badge */}
+            <div className="flex items-center gap-2 px-5 py-2 bg-gradient-to-br from-blue-500/30 to-blue-800/30 text-white border border-white/20 backdrop-blur-md rounded-full shadow-md transition-transform hover:scale-105 hover:shadow-lg">
+              <span className="text-xl">⏱</span>
+              <span className="text-sm md:text-base font-medium">{packageData.duration}</span>
+            </div>
+            {/* Price Badge */}
+            <div className="flex items-center gap-2 px-5 py-2 bg-gradient-to-br from-green-500/30 to-green-800/30 text-white border border-white/20 backdrop-blur-md rounded-full shadow-md transition-transform hover:scale-105 hover:shadow-lg">
+              <span className="text-xl">💰</span>
+              <span className="text-sm md:text-base font-medium">
+                Rs. {packageData.price}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Duration</p>
-              <p className="font-medium">{packageData.duration}</p>
-            </div>
-            <span className="text-blue-600">⏱</span>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Price</p>
-              <p className="font-medium">{packageData.currency} {packageData.price}</p>
-            </div>
-            <span className="text-green-600">💰</span>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Rating</p>
-              <p className="font-medium">{packageData.rating} / 5.0</p>
-            </div>
-            <span className="text-yellow-500">⭐</span>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow-md">
+      {/* Package Actions */}
+      <div className="flex items-center justify-between px-6 py-4 bg-white shadow-md rounded-lg">
+        <div className="flex items-center gap-4">
           <button
             onClick={handleLike}
-            className={`w-full flex items-center justify-center gap-2 py-2 rounded-md
-                     transition-colors duration-200
-                     ${packageData.isLiked
-                ? "bg-blue-600 text-white"
-                : "bg-blue-50 text-blue-600 hover:bg-blue-100"}`}
+            className={`px-4 py-2 rounded-md text-white transition-colors duration-300
+              ${packageData.isLiked ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"}`}
           >
-            {packageData.isLiked ? "❤️" : "🤍"} {packageData.likes} Likes
+            {packageData.isLiked ? "Unlike" : "Like"} ({packageData.likes})
+          </button>
+          <button
+            onClick={handleBookNow}
+            className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+          >
+            Book Now
           </button>
         </div>
+        <div className="flex items-center gap-4">
+          <span className="text-lg font-semibold text-gray-800">
+            Rating: {(packageData.rating || 0).toFixed(1)} ⭐
+          </span>
+          <span className="text-sm text-gray-500">
+            {packageData.reviews.length} Reviews
+          </span>
+        </div>
       </div>
-
-      {/* Navigation Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="flex flex-wrap gap-4">
-          {["overview", "itinerary", "gallery", "reviews"].map(tab => (
+      
+      {/* Tabs Navigation */}
+      <div className="border-b border-gray-300">
+        <nav className="flex flex-wrap justify-center gap-6">
+          {["overview", "itinerary", "gallery", "reviews"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 font-medium capitalize transition-colors duration-200
-                        ${activeTab === tab
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"}`}
+              className={`relative pb-2 text-base font-sans font-bold uppercase transition-all duration-300
+          ${activeTab === tab ? "text-blue-600" : "text-gray-500 hover:text-blue-600"}`}
             >
               {tab}
+              {/* Underline */}
+              <span
+                className={`absolute left-1/2 -bottom-0.5 h-0.5 bg-blue-600 transition-all duration-300 ease-out
+            ${activeTab === tab ? "w-full -translate-x-1/2" : "w-0 -translate-x-1/2"}`}
+              />
             </button>
           ))}
         </nav>
       </div>
 
-      {/* Tab Content */}
-      <div className="space-y-6">
-        {activeTab === "overview" && (
-          <div className="space-y-6">
-            {/* Highlights */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl text-blue-600 font-semibold mb-4">Highlights</h2>
-              <div className="grid grid-cols-1 text-gray-600  md:grid-cols-2 gap-4">
-                {packageData.highlights.map((highlight, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <span className="text-blue-500">📍</span>
-                    <span>{highlight}</span>
-                  </div>
-                ))}
+      
+      {/* Overview Content */}
+      {(activeTab === "overview") && (
+      <div className="space-y-8">
+        {/* Description */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-4xl tracking-wide font-sans font-bold text-blue-600 mb-4">Description</h2>
+          <p className="text-gray-700 text-lg tracking-wide leading-relaxed">
+            {packageData.description}
+          </p>
+        </div>
+
+        {/* Highlights */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold text-blue-600 mb-6">Highlights</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {packageData.highlights.map((highlight, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-3 p-4 border border-gray-200 rounded-md hover:shadow transition"
+              >
+                <span className="text-blue-500 text-xl">📍</span>
+                <span className="text-gray-700">{highlight}</span>
               </div>
-            </div>
-
-            {/* Inclusions & Exclusions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-xl text-blue-600  font-semibold mb-4">What&apos;s Included</h2>
-                <ul className="space-y-2 text-gray-600 ">
-                  {packageData.inclusions.map((item, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <span className="text-green-500">✓</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold text-blue-600  mb-4">What&apos;s Not Included</h2>
-                <ul className="space-y-2 text-gray-600 ">
-                  {packageData.exclusions.map((item, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <span className="text-red-500">✗</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Availability */}
-            <div className="bg-white text-blue-600 p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4">Availability</h2>
-              <div className="flex flex-wrap gap-6">
-                <div>
-                  <p className="text-sm text-gray-500">Start Date</p>
-                  <p className="font-medium">
-                    {new Date(packageData.availability.startDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">End Date</p>
-                  <p className="font-medium">
-                    {new Date(packageData.availability.endDate).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-
-              {/* Check if the package is available */}
-              {new Date(packageData.availability.startDate) <= new Date() &&
-                new Date(packageData.availability.endDate) >= new Date() && (
-                  <button
-                    onClick={handleBookNow}
-                    className="mt-4 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
-                  >
-                    Book Now
-                  </button>
-                )}
-            </div>
-
+            ))}
           </div>
-        )}
+        </div>
 
+        {/* Inclusions & Exclusions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold text-green-600 mb-4">What's Included</h2>
+            <ul className="space-y-3 text-gray-700">
+              {packageData.inclusions.map((item, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <span className="text-green-500 text-lg">✓</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold text-red-500 mb-4">What's Not Included</h2>
+            <ul className="space-y-3 text-gray-700">
+              {packageData.exclusions.map((item, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <span className="text-red-500 text-lg">✗</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Availability */}
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold text-blue-600 mb-4">Availability</h2>
+          <div className="flex flex-wrap gap-8 items-center text-gray-700">
+            <div>
+              <p className="text-sm text-gray-500">Start Date</p>
+              <p className="font-medium">
+                {new Date(packageData.availability.startDate).toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">End Date</p>
+              <p className="font-medium">
+                {new Date(packageData.availability.endDate).toLocaleDateString()}
+              </p>
+            </div>
+
+            {/* Status */}
+            {new Date(packageData.availability.startDate) <= new Date() &&
+              new Date(packageData.availability.endDate) >= new Date() ? (
+              <span className="px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-full">
+                Currently Available
+              </span>
+            ) : (
+              <span className="px-3 py-1 text-sm font-medium text-red-700 bg-red-100 rounded-full">
+                Not Available
+              </span>
+            )}
+          </div>
+
+          {/* Book Now CTA */}
+          {new Date(packageData.availability.startDate) <= new Date() &&
+            new Date(packageData.availability.endDate) >= new Date() && (
+              <button
+                onClick={handleBookNow}
+                className="mt-6 px-6 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+              >
+                Book Now
+              </button>
+            )}
+        </div>
+        </div>
+        )}
+        {/* Itinerary Tab */}
+        <div>
         {activeTab === "itinerary" && (
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-6">Journey Timeline</h2>
