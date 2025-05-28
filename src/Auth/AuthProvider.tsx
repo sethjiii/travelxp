@@ -13,9 +13,9 @@ type User = {
   email: string;
   name: string;
   role: string;
-  avatarUrl?: string; // Optional, in case you have a user avatar
-  token?: string; // Optional, if you are storing JWT
-  _id?: string; // Optional, for user identification
+  avatarUrl?: string;
+  token?: string;
+  _id?: string;
 };
 
 type AuthContextType = {
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  // Initialize user state from localStorage on load
+  // ✅ Load user from localStorage when app starts
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -42,12 +42,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Sync user state with localStorage whenever user changes
+  // ✅ Persist user changes to localStorage
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", user.token || "");
+      localStorage.setItem("email", user.email);
+      localStorage.setItem("name", user.name);
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("_id", user._id || "");
     } else {
-      localStorage.removeItem("user");
+      localStorage.clear(); // Clear all if logged out
     }
   }, [user]);
 
@@ -65,31 +70,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.user) {
+        const userData: User = {
+          ...data.user,
+          token: data.user.token,
+        };
+
+        setUser(userData);
         setIsAuthenticated(true);
-        setUser(data.user);
 
-        // Save user data to localStorage
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.user.token || "");
-        localStorage.setItem("email", data.user.email);
-        localStorage.setItem("name", data.user.name);
-        localStorage.setItem("role", data.user.role);
-        localStorage.setItem("_id", data.user._id || "");
+        console.log("Login successful:", userData);
 
-        console.log("Login successful:", data.user);
-
-        console.log("user88")
-        console.log(user)
-        console.log("user88")
-
-
-        // Redirect based on user role
-        if (data.user.role === "admin") {
-          router.push("/admin");
-        } else {
-          router.push("/");
-        }
+        // Redirect based on role
+        router.push(userData.role === "admin" ? "/admin" : "/");
       } else {
         console.error("Login failed:", data.error);
         alert("Login failed. Please check your credentials.");
@@ -102,11 +95,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     console.log("Logging out...");
-    document.cookie = "token=; max-age=0; path=/"; // Clear token if stored in cookies
+    document.cookie = "token=; max-age=0; path=/";
+    setUser(null);
     setIsAuthenticated(false);
-    setUser(null); // Clear user state
-    localStorage.clear(); // Clear all localStorage data
-    router.push("/login"); // Redirect to login page
+    localStorage.clear();
+    router.push("/login");
   };
 
   return (
