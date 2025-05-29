@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ArrowRight, Bookmark, DollarSign, IndianRupee, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import {  StarHalf, StarOff } from "lucide-react";
+import { StarHalf, StarOff } from "lucide-react";
 
 // Define the structure of a package
 interface Package {
@@ -25,26 +25,26 @@ const AllPackagesPage = () => {
   const [loading, setLoading] = useState(true);
 
 
-// ⭐ Star rendering logic
-const renderStars = (rating = 4.5) => {
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating % 1 >= 0.5;
-  const stars = [];
+  // ⭐ Star rendering logic
+  const renderStars = (rating = 4.5) => {
+    const fullStars = Math.floor(rating);
+    const hasHalf = rating % 1 >= 0.5;
+    const stars = [];
 
-  for (let i = 0; i < fullStars; i++) {
-    stars.push(<Star key={`star-${i}`} className="text-yellow-400 w-4 h-4" fill="currentColor" />);
-  }
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<Star key={`star-${i}`} className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+    }
 
-  if (hasHalf && fullStars < 5) {
-    stars.push(<StarHalf key="half" className="text-yellow-400 w-4 h-4" fill="currentColor" />);
-  }
+    if (hasHalf && fullStars < 5) {
+      stars.push(<StarHalf key="half" className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+    }
 
-  while (stars.length < 5) {
-    stars.push(<StarOff key={`off-${stars.length}`} className="text-yellow-400 w-4 h-4" />);
-  }
+    while (stars.length < 5) {
+      stars.push(<StarOff key={`off-${stars.length}`} className="text-yellow-400 w-4 h-4" />);
+    }
 
-  return stars;
-};
+    return stars;
+  };
 
 
   // Fetch packages from the backend
@@ -69,7 +69,7 @@ const renderStars = (rating = 4.5) => {
     console.log(`Adding package ${id} to wishlist`);
     // Maybe call an API or update local state
   };
-  
+
   // Filter packages based on search query
   const filteredPackages = packages.filter((pkg) =>
     pkg.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -130,40 +130,31 @@ const renderStars = (rating = 4.5) => {
                     </span>
                   ))}
                 </div>
-                
+
                 <div className="flex  flex-wrap gap-6 mt-4 items-center">
-  {/* Explore Now Link */}
-  <Link
-    href={`/packages/${pkg._id}`}
-    className="w-1/4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 border border-blue-500 text-blue-500 font-bold tracking-wide hover:text-white py-2 transition"
-  >
-    Explore Now
-  </Link>
-
-  {/* Add to Wishlist Button */}
-  <button
-    onClick={() => handleAddToWishlist(pkg._id)}
-    className="w-1/4 rounded-lg hover:bg-green-600 flex items-center justify-center gap-2 border border-green-500 text-green-500 font-bold tracking-wide hover:text-white py-2 transition"
-  >
-    <Bookmark className="w-4 h-4" /> Wishlist
-  </button>
-
-  {/* ⭐ Star Rating Section */}
-  <div className="flex items-center gap-1 ml-auto">
-    {renderStars(pkg.rating)}
-    <span className="text-sm font-bold  text-gray-900 tracking-widest ">
-      {(pkg.rating ?? 4.5).toFixed(1)}
-    </span>
-  </div>
-</div>
-
-
-
-
-
-
-
-
+                {/* ⭐ Star Rating Section */}
+                  <div className="flex items-center gap-1 mr-auto">
+                    {renderStars(pkg.rating)}
+                    <span className="text-sm font-bold  text-gray-900 tracking-widest ">
+                      {(pkg.rating ?? 4.5).toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-6 ml-4 sm:gap-2">
+                  <Link
+                    href={`/packages/${pkg._id}`}
+                    className="w-fit min-w-[120px] rounded-md hover:bg-blue-700 flex items-center justify-center gap-1 border border-blue-500 text-blue-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
+                  >
+                    Explore Now
+                  </Link>
+                  <button
+                    onClick={() => handleAddToWishlist(pkg._id)}
+                    className="w-fit min-w-[120px] rounded-md hover:bg-green-700 flex items-center justify-center gap-1 border border-green-500 text-green-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    Wishlist
+                  </button>
+                </div>
+                </div>
               </div>
             </div>
           </div>
