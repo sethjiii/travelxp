@@ -45,9 +45,14 @@ export default function DestinationsList() {
   }, []);
 
   if (loading) return (
-    <div className="flex justify-center items-center py-10">
-      <p className="text-gray-400 text-lg">Loading destinations...</p>
-    </div>
+   
+        <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500 mb-6"></div>
+          <div className="text-black tracking-widest text-2xl text-center font-mono px-4">
+            Hold onn... We Are Fetching the Best Combination of Adventure For You...
+          </div>
+        </div>
+      
   );
 
   if (error) return (
@@ -64,11 +69,11 @@ export default function DestinationsList() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-6 font-sans text-gray-600">
-      <h2 className="text-4xl font-extrabold font-serif tracking-widest text-center text-gray-600 mb-12">
-        Explore Destinations
+      <h2 className="text-4xl font-extrabold font-serif tracking-widest text-center text-gray-600 mb-2">
+        Explore Destinations With TravelEase
       </h2>
 
-      <div className="space-y-12">
+      <div className="space-y-6">
         {destinations.map((destination) => (
           <div
             key={destination._id}
@@ -94,7 +99,7 @@ export default function DestinationsList() {
 
                     <Plane className="w-6 h-6" />
                     <h4 className="text-2xl font-semibold text-blue-500">
-                      Available Packages
+                      Available Packages in {destination.city}
                     </h4>
                   </div>
                   <Swiper

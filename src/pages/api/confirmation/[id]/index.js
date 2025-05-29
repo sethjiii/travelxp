@@ -1,42 +1,37 @@
-import { connectToDatabase } from "../../dbConnect"; // Helper for MongoDB connection
+import dbConnect from "../../dbConnect"; // Mongoose connection
+import Booking from "../../../../models/Bookings"; // Your Booking model
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
-    try {
-      // Establish DB connection
-      const { db } = await connectToDatabase();
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-      // Extract booking data and userId from the request body
-      const { bookingData, userId } = req.body;
+  try {
+    await dbConnect();
 
-      // Log the userId for verification
-      console.log("Received userId:", req.body);
+    console.log("req.body")
+    console.log(req.body)
+    const { bookingData, userId } = req.body;
+  
 
-      // Include the userId in the booking data before inserting into the database
-      const bookingWithUserId = {
-        ...bookingData,
-        userId: userId,  // Add userId to the booking data
-      };
-
-      // Insert the booking into the 'Bookings' collection
-      const result = await db.collection("Bookings").insertOne(bookingWithUserId);
-
-      // Check if insertion was successful
-      if (result.acknowledged) {
-        // Return booking confirmation with booking ID and userId
-        res.status(201).json({
-          bookingId: result.insertedId.toString(),
-          userId: userId, // Send back userId as part of the response
-        });
-      } else {
-        res.status(500).json({ error: "Failed to create booking" });
-      }
-    } catch (error) {
-      console.error("Error creating booking:", error);
-      res.status(500).json({ error: "Error creating booking" });
+    if (!userId || !bookingData) {
+      return res.status(400).json({ error: "Missing userId or bookingData" });
     }
-  } else {
-    // Handle any method that is not POST
-    res.status(405).json({ error: "Method Not Allowed" });
+
+    // Create a new Booking using nested subdocuments
+    const newBooking = new Booking({
+      ...bookingData,
+      userId, // Should be valid ObjectId
+    });
+
+    const savedBooking = await newBooking.save();
+
+    return res.status(201).json({
+      bookingId: savedBooking._id.toString(),
+      userId: savedBooking.userId.toString(),
+    });
+  } catch (error) {
+    console.error("Error creating booking:", error);
+    return res.status(500).json({ error: "Error creating booking" });
   }
 }

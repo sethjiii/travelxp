@@ -1,20 +1,24 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
+const { Schema } = mongoose;
 
-const EmergencyContactSchema = new Schema<EmergencyContact>({
+// Emergency Contact Sub-Schema
+const EmergencyContactSchema = new Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   relation: { type: String, required: true },
 });
 
-const TravelerSchema = new Schema<Traveler>({
+// Traveler Sub-Schema
+const TravelerSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
 });
 
-const BookingSchema = new Schema<Booking>({
-  packageId: { type: Schema.Types.ObjectId, ref: "Package", required: true },
+// Booking Schema
+const BookingSchema = new Schema({
+  packageId: { type: Schema.Types.ObjectId, ref: "TravelPackage", required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   numberOfTravelers: { type: Number, required: true },
   startDate: { type: String, required: true },
@@ -22,8 +26,11 @@ const BookingSchema = new Schema<Booking>({
   emergencyContact: { type: EmergencyContactSchema, required: true },
   travelers: { type: [TravelerSchema], required: true },
   totalAmount: { type: Number, required: true },
+}, {
+  timestamps: true,
 });
 
-const BookingModel = mongoose.models.Booking || mongoose.model<Booking>("Booking", BookingSchema);
+// Avoid recompiling the model if already compiled
+const BookingModel = mongoose.models.Booking || mongoose.model("Booking", BookingSchema);
 
 export default BookingModel;

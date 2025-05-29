@@ -88,8 +88,16 @@ const AllPackagesPage = () => {
         />
       </div>
 
-      {/* Loading Spinner */}
-      {loading && <div>Loading...</div>}
+      {loading && (
+  <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500 mb-6"></div>
+    <div className="text-black tracking-widest text-2xl text-center font-mono px-4">
+      Hold onn... We Are Fetching the Best Combination of Adventure For You...
+    </div>
+  </div>
+)}
+
+
 
       {/* Packages Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 bg-gray-200  gap-6">
@@ -164,7 +172,7 @@ const AllPackagesPage = () => {
       {/* No Results Found */}
       {filteredPackages.length === 0 && (
         <div className="text-center text-gray-600">
-          <p>No packages found for &quot;{searchQuery}&quot;.</p>
+          {!loading&&<p>No packages found for &quot;{searchQuery}&quot;.</p>}
         </div>
       )}
     </div>

@@ -52,17 +52,17 @@ const Navbar = () => {
   
       {/* Menu Options */}
       <div className="flex flex-col divide-y ml-1 divide-gray-200 text-gray-800 text-sm bg-white">
-        <Link
+        {user?.role=='admin'&&<Link
           href="/dashboard"
           className="flex items-center gap-3 px-2 py-2 hover:bg-gray-50 transition"
           onClick={() => setIsProfileMenuOpen(false)}
         >
           <Settings className="h-4 w-4 text-blue-600" />
           Dashboard
-        </Link>
+        </Link>}
   
         <Link
-          href="/trips"
+          href={`/my-trips/${user?._id}`}
           className="flex items-center gap-3 px-2 py-2 hover:bg-gray-50 transition"
           onClick={() => setIsProfileMenuOpen(false)}
         >
