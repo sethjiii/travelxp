@@ -183,7 +183,7 @@ const TravelContent = () => {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Enhanced Hero Section */}
-      <section className="relative h-[600px] overflow-hidden mb-16">
+      <section className="relative h-[600px] overflow-hidden">
         <img
           src="11.jpeg"
           alt="Travel Hero"
@@ -212,65 +212,26 @@ const TravelContent = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-20 bg-gradient-to-b from-blue-200 to-blue-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-gray-800">
-            Why Travel With Us
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              {
-                icon: <Award className="h-8 w-8" />,
-                title: "Best Price Guarantee",
-                description: "We offer unbeatable prices for premium travel experiences"
-              },
-              {
-                icon: <Compass className="h-8 w-8" />,
-                title: "Expert Guides",
-                description: "Professional local guides to enhance your journey"
-              },
-              {
-                icon: <PhoneCall className="h-8 w-8" />,
-                title: "24/7 Support",
-                description: "Round-the-clock assistance for peace of mind"
-              },
-              {
-                icon: <Star className="h-8 w-8" />,
-                title: "Curated Experiences",
-                description: "Handpicked destinations and activities"
-              }
-            ].map((item, index) => (
-              <div key={index} className="text-center p-6 bg-blue-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                <div className="inline-block p-4 bg-blue-100 rounded-full text-blue-600 mb-4">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl text-gray-700 font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600 font-sans">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+ 
 
       {/* Featured Packages Section */}
-      <section className="py-20 bg-gradient-to-b from-blue-200 to-blue-50 px-5">
+      <section className="py-10 bg-gradient-to-b from-blue-200 to-blue-50 px-5">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800">
+            <h2 className=" text-xl sm:text-4xl tracking-wide  font-bold text-blue-700">
               Featured Packages
             </h2>
             <Link
               href="/packages"
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+              className="flex items-center gap-2 text-blue-500 hover:text-blue-700 font-semibold"
             >
               View All <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
 
           {/* Enhanced Search and Filter Bar */}
-          <div className="mb-8 bg-white p-6 rounded-2xl shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="mb-4 bg-white p-1 rounded-lg shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-1">
               {/* Search Input */}
               <div className="relative col-span-2">
                 <input
@@ -310,7 +271,7 @@ const TravelContent = () => {
             </div>
 
             {/* Active Filters */}
-            <div className="mt-4 flex flex-wrap gap-2">
+            {/* <div className="mt-4 flex flex-wrap gap-2">
               {searchQuery && (
                 <span className="px-1 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-2">
                   Search: {searchQuery}
@@ -333,7 +294,7 @@ const TravelContent = () => {
                   </button>
                 </span>
               )}
-            </div>
+            </div> */}
           </div>
 
           <Swiper
@@ -505,6 +466,46 @@ const TravelContent = () => {
         </div>
       </section>
 
+     {/* Why Choose Us Section */}
+     <section className="py-20 bg-gradient-to-b from-blue-200 to-blue-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-16 text-gray-800">
+            Why Travel With Us
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              {
+                icon: <Award className="h-8 w-8" />,
+                title: "Best Price Guarantee",
+                description: "We offer unbeatable prices for premium travel experiences"
+              },
+              {
+                icon: <Compass className="h-8 w-8" />,
+                title: "Expert Guides",
+                description: "Professional local guides to enhance your journey"
+              },
+              {
+                icon: <PhoneCall className="h-8 w-8" />,
+                title: "24/7 Support",
+                description: "Round-the-clock assistance for peace of mind"
+              },
+              {
+                icon: <Star className="h-8 w-8" />,
+                title: "Curated Experiences",
+                description: "Handpicked destinations and activities"
+              }
+            ].map((item, index) => (
+              <div key={index} className="text-center p-6 bg-blue-300 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                <div className="inline-block p-4 bg-blue-100 rounded-full text-blue-600 mb-4">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl text-gray-700 font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-600 font-sans">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
 
       {/* Testimonials Section */}
