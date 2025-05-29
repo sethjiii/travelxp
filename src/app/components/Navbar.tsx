@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { MapPin, Globe, Menu, X, User, Phone, LogOut, Settings, Heart, Copy, SearchCheck, Search } from "lucide-react";
+import { MapPin, Globe, Menu, X, User, Phone, LogOut, Settings, Heart, Search } from "lucide-react";
 import { useAuth } from "../../Auth/AuthProvider";
 import Image from "next/image";
 

@@ -5,7 +5,6 @@ import {
   Minus,
   Upload,
   PackageOpen,
-  DollarSign,
   Clock,
   Image as ImageIcon,
   Hotel,

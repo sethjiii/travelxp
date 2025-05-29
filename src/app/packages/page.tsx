@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { ArrowRight, Bookmark, DollarSign, IndianRupee, Star } from "lucide-react";
+import { ArrowRight, Bookmark, IndianRupee, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { StarHalf, StarOff } from "lucide-react";

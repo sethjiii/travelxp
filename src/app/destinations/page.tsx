@@ -35,14 +35,20 @@ export default function DestinationsList() {
         if (!res.ok) throw new Error("Failed to fetch destinations");
         const data = await res.json();
         setDestinations(data.destinations || []);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
+      } catch (err: unknown) {
+        // Narrow down the error type to extract message safely
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Something went wrong");
+        }
       } finally {
         setLoading(false);
       }
     }
     fetchDestinations();
   }, []);
+  
 
   if (loading) return (
    

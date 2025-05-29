@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { BookUp2Icon, Briefcase, CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, CheckCircle2, ListCheck, ListChecks, ListCollapse, ListXIcon, MapPin, Rocket, Sparkles, User, UserCheck, X, XCircle } from "lucide-react";
+import {  CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, ListCheck,  ListXIcon, Rocket, Sparkles, User, X } from "lucide-react";
 
 // Interfaces remain the same as your original code
 type Availability = {
@@ -332,7 +332,7 @@ const TravelPackageDisplay = () => {
           <div>
             <div className="flex items-center gap-2 text-green-600">
               <ListCheck className="w-5 h-5" />
-              <h2 className="text-lg font-semibold tracking-wide">What's Included</h2>
+              <h2 className="text-lg font-semibold tracking-wide">What&apos;s Included</h2>
             </div>
             <ul className="mt-3 space-y-2">
               {packageData.inclusions.map((item, index) => (
@@ -348,7 +348,7 @@ const TravelPackageDisplay = () => {
           <div>
             <div className="flex items-center gap-2 text-red-500">
               <ListXIcon className="w-5 h-5" />
-              <h2 className="text-lg tracking-wide font-semibold">What's Not Included</h2>
+              <h2 className="text-lg tracking-wide font-semibold">What&apos;s Not Included</h2>
             </div>
             <ul className="mt-3 space-y-2">
               {packageData.exclusions.map((item, index) => (

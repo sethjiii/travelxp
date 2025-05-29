@@ -1,7 +1,7 @@
 import dbConnect from "../../dbConnect";
 import Booking from "../../../../models/Bookings";
-import TravelPackage from "../../../../models/TravelPackages"; // ✅ required for .populate("packageId")
-import User from "../../../../models/user"; // Adjust the path as needed
+// import TravelPackage from "../../../../models/TravelPackages"; // ✅ required for .populate("packageId")
+// import User from "../../../../models/user"; // Adjust the path as needed
 
 
 export default async function handler(req, res) {
