@@ -10,9 +10,20 @@ import {
   Award,
   Star,
   PhoneCall,
+  Bookmark,
+  IndianRupee,
+  StarHalf,
+  StarOff,
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+import { Navigation, Pagination } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 
 interface TravelPackage {
   _id: number;
@@ -25,6 +36,8 @@ interface TravelPackage {
   likes: number;
   destination: string;
   name: string;
+  places: string;
+  rating: number;
 }
 
 interface Testimonial {
@@ -90,11 +103,32 @@ const TravelContent = () => {
     };
 
     const popularPackages = [...packages]
-    .sort((a, b) => b.likes - a.likes)
-    .slice(0, 6);
+      .sort((a, b) => b.likes - a.likes)
+      .slice(0, 6);
     console.log(popularPackages)
     fetchPackages();
   }, []);
+
+       // ⭐ Star rendering logic
+      const renderStars = (rating = 4.5) => {
+        const fullStars = Math.floor(rating);
+        const hasHalf = rating % 1 >= 0.5;
+        const stars = [];
+    
+        for (let i = 0; i < fullStars; i++) {
+          stars.push(<Star key={`star-${i}`} className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+        }
+    
+        if (hasHalf && fullStars < 5) {
+          stars.push(<StarHalf key="half" className="text-yellow-400 w-4 h-4" fill="currentColor" />);
+        }
+    
+        while (stars.length < 5) {
+          stars.push(<StarOff key={`off-${stars.length}`} className="text-yellow-400 w-4 h-4" />);
+        }
+    
+        return stars;
+      };
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +136,7 @@ const TravelContent = () => {
       toast.error("Please enter your email address");
       return;
     }
-    
+
     setSubscribing(true);
     try {
       const response = await fetch('/api/subscribe', {
@@ -110,9 +144,9 @@ const TravelContent = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
-      
+
       if (!response.ok) throw new Error('Subscription failed');
-      
+
       toast.success("Successfully subscribed to newsletter!");
       setEmail("");
     } catch (error) {
@@ -302,177 +336,210 @@ const TravelContent = () => {
             </div>
           </div>
 
-          {/* Package Grid */}
-          <section className="mb-16 px-4 md:px-8 lg:px-12">
-  {/* <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-    Featured Packages
-  </h2> */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {featuredPackages.map((pkg) => (
-      <div
-        key={pkg._id}
-        className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden"
-      >
-        {/* Image Section */}
-        <div className="relative">
-          <img
-            src={pkg.images[0]}
-            alt={pkg.title}
-            className="w-full h-48 object-cover"
-          />
-          <button className="absolute top-4 right-4 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-all">
-            <Heart className="h-5 w-5 text-red-500" />
-          </button>
-        </div>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            autoplay={{ delay: 300 }}
+            navigation
+            pagination={{ clickable: true }}
+            spaceBetween={20}
+            slidesPerView={3}
+            scrollbar={{ draggable: true }}
+            centeredSlides={true}
+            loop={true}
+            speed={500}
+            // Responsive breakpoints
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+              },
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            className="mySwiper"
+          >
+            {featuredPackages.map((pkg) => (
+              <SwiperSlide key={pkg._id}>
+                <div
 
-        {/* Content Section */}
-        <div className="p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-2">{pkg.title}</h3>
-          <p className="text-gray-600 text-sm mb-4">{pkg.description}</p>
+              className="overflow-hidden pb-10 shadow-l text-gray-800  hover:shadow-2xl  transition-shadow duration-300"
+            >
+              <div className="relative h-64">
+                <img
+                  src={pkg.images[0]}
+                  alt={pkg.name}
+                  width={200}
+                  height={300}
+                  className="w-full h-full object-fill"
+                />
+              </div>
+              <div className="p-4">
+                <h6 className="text-sm text-gray-500 tracking-wide">{pkg.duration}</h6>
+                <div className="flex">
+                  <div className="flex justify-between items-end w-full mt-auto pt-1">
+                    <h2 className="text-2xl  font-semibold font-sans tracking-wider">{pkg.name}</h2>
 
-          {/* Highlights */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {pkg.highlights.map((highlight, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs font-medium flex items-center gap-2"
-              >
-                <MapPin className="h-4 w-4 text-blue-500" />
-                {highlight}
-              </span>
+                    <div className="flex items-center text-yellow-600  text-2xl font-bold tracking-wide">
+                      <IndianRupee className="text-xl" />
+                      <span>{pkg.price}</span>
+                    </div>
+                  </div>
+
+                </div>
+                <div className="flex flex-wrap text-xs text-gray-500 mt-2 mb-2">
+
+                  {pkg.places.split("-").map((place, index, arr) => (
+                    <span key={index} className="flex items-center tracking-wide">
+                      <span>{place}</span>
+                      {index < arr.length - 1 && <ArrowRight className="mx-1 w-4 h-6 opacity-25" />}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex  flex-wrap gap-6 mt-4 items-center">
+                {/* ⭐ Star Rating Section */}
+                  <div className="flex items-center gap-1 mr-auto">
+                    {renderStars(pkg.rating)}
+                    <span className="text-sm font-bold  text-gray-900 tracking-widest ">
+                      {(pkg.rating ?? 4.5).toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-6 ml-4 sm:gap-2">
+                  <Link
+                    href={`/packages/${pkg._id}`}
+                    className="w-fit min-w-[120px] rounded-md hover:bg-blue-700 flex items-center justify-center gap-1 border border-blue-500 text-blue-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
+                  >
+                    Explore Now
+                  </Link>
+                  <button
+                    className="w-fit min-w-[120px] rounded-md hover:bg-green-700 flex items-center justify-center gap-1 border border-green-500 text-green-500 font-semibold tracking-wide hover:text-white py-1.5 px-3 text-sm transition"
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    Wishlist
+                  </button>
+                </div>
+                </div>
+              </div>
+            </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
 
-          {/* Price and Duration */}
-          <div className="flex items-center justify-between text-gray-800 mb-4">
-            <span className="text-blue-600 font-bold text-xl">
-              ${pkg.price}
-            </span>
-            <span className="flex items-center gap-2 text-sm text-gray-500">
-              <Clock className="h-5 w-5 text-gray-400" />
-              {pkg.duration}
-            </span>
-          </div>
-
-          {/* View Details Button */}
-          <Link href={`/packages/${pkg._id}`}className="block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-              View Details
-            
-          </Link>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
         </div>
       </section>
 
       <section className="py-20 bg-gradient-to-b from-blue-100 to-white px-5">
-  <div className="container mx-auto px-4">
-    {/* Header */}
-    <div className="flex justify-between items-center mb-12">
-      <h2 className="text-4xl font-bold text-gray-800">Popular Destinations</h2>
-      <Link
-        href="/packages"
-        className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
-      >
-        Explore All <ArrowRight className="h-5 w-5" />
-      </Link>
-    </div>
+        <div className="container mx-auto px-4">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-800">Popular Destinations</h2>
+            <Link
+              href="/packages"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              Explore All <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
 
-    {/* Destination Grid */}
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-  {popularPackages.map((pkg) => (
-    <div
-      key={pkg._id}
-      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
-    >
-      {/* Image Section */}
-      <div className="relative">
-        <img
-          src={pkg.images[0]}
-          alt={pkg.title}
-          className="w-full h-36 object-cover"
-        />
-        <button className="absolute top-2 right-2 p-1 bg-white/80 rounded-full shadow hover:bg-white transition-all">
-          <Heart className="h-4 w-4 text-red-500" />
-        </button>
-      </div>
+          {/* Destination Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {popularPackages.map((pkg) => (
+              <div
+                key={pkg._id}
+                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+              >
+                {/* Image Section */}
+                <div className="relative">
+                  <img
+                    src={pkg.images[0]}
+                    alt={pkg.title}
+                    className="w-full h-36 object-cover"
+                  />
+                  <button className="absolute top-2 right-2 p-1 bg-white/80 rounded-full shadow hover:bg-white transition-all">
+                    <Heart className="h-4 w-4 text-red-500" />
+                  </button>
+                </div>
 
-      {/* Content Section */}
-      <div className="p-4">
-        {/* Title */}
-        <h3 className="text-sm font-bold text-gray-800 mb-1 truncate">
-          {pkg.name}
-        </h3>
+                {/* Content Section */}
+                <div className="p-4">
+                  {/* Title */}
+                  <h3 className="text-sm font-bold text-gray-800 mb-1 truncate">
+                    {pkg.name}
+                  </h3>
 
-        {/* Destination */}
-        <p className="flex items-center gap-1 text-gray-600 text-xs mb-2">
-          <MapPin className="h-3 w-3 text-blue-500" />
-          {pkg.highlights[0]}
-        </p>
+                  {/* Destination */}
+                  <p className="flex items-center gap-1 text-gray-600 text-xs mb-2">
+                    <MapPin className="h-3 w-3 text-blue-500" />
+                    {pkg.highlights[0]}
+                  </p>
 
-        {/* Price */}
-        <div className="flex items-center justify-between text-gray-800 mb-2">
-          <span className="text-blue-600 font-bold text-sm">
-            ${pkg.price}
-          </span>
-          <span className="flex items-center gap-1 text-xs text-gray-500">
-            <Clock className="h-4 w-4 text-gray-400" />
-            {pkg.duration}
-          </span>
+                  {/* Price */}
+                  <div className="flex items-center justify-between text-gray-800 mb-2">
+                    <span className="text-blue-600 font-bold text-sm">
+                      ${pkg.price}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-gray-500">
+                      <Clock className="h-4 w-4 text-gray-400" />
+                      {pkg.duration}
+                    </span>
+                  </div>
+
+                  {/* View Details Button */}
+                  <Link
+                    href={`/packages/${pkg._id}`}
+                    className="block w-full text-center bg-blue-600 text-white text-xs py-1 rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
-
-        {/* View Details Button */}
-        <Link
-          href={`/packages/${pkg._id}`}
-          className="block w-full text-center bg-blue-600 text-white text-xs py-1 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          View Details
-        </Link>
-      </div>
-    </div>
-  ))}
-</div>
-
-  </div>
-</section>
+      </section>
 
 
 
       {/* Testimonials Section */}
-     <section className="py-12 bg-gray-50">
-  <div className="container mx-auto px-4">
-    <h2 className="text-2xl font-bold text-center mb-8 text-gray-800">
-      What Our Travelers Say
-    </h2>
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {testimonials.map((testimonial) => (
-        <div key={testimonial.id} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3 mb-4">
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              className="w-12 h-12 rounded-full object-cover"
-            />
-            <div>
-              <h3 className="font-semibold text-blue-400 text-sm truncate">{testimonial.name}</h3>
-              <p className="text-gray-600 text-xs truncate">{testimonial.destination}</p>
-            </div>
-          </div>
-          <p className="text-gray-700 text-sm mb-3 line-clamp-3">
-            {testimonial.comment}
-          </p>
-          <div className="flex gap-1">
-            {Array.from({ length: testimonial.rating }).map((_, i) => (
-              <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-8 text-gray-800">
+            What Our Travelers Say
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.id} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-4">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <h3 className="font-semibold text-blue-400 text-sm truncate">{testimonial.name}</h3>
+                    <p className="text-gray-600 text-xs truncate">{testimonial.destination}</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+                  {testimonial.comment}
+                </p>
+                <div className="flex gap-1">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
 
       {/* Enhanced Newsletter Section */}
