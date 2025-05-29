@@ -35,10 +35,10 @@ interface Review {
   createdAt: string;
 }
 
-type NewReview = {
-  rating: number;
-  review: string;
-};
+// type NewReview = {
+//   rating: number;
+//   review: string;
+// };
 
 
 interface Comment {
@@ -75,7 +75,7 @@ const TravelPackageDisplay = () => {
 
   const [packageData, setPackageData] = useState<TravelPackage | null>(null);
   const [loading, setLoading] = useState(true);
-  const [newComment, setNewComment] = useState("");
+  // const [newComment, setNewComment] = useState("");
   const [newReview, setNewReview] = useState({ rating: 0, review: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [visibleReviews, setVisibleReviews] = useState<Review[]>([]);
@@ -103,48 +103,48 @@ const TravelPackageDisplay = () => {
   };
 
 
-  const handleLike = async () => {
-    if (!packageData) return;
-    try {
-      const response = await fetch(`/api/packages/${id}/like`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) {
-        setPackageData(prev => prev ? {
-          ...prev,
-          likes: prev.isLiked ? prev.likes - 1 : prev.likes + 1,
-          isLiked: !prev.isLiked
-        } : null);
-      }
-    } catch (error) {
-      console.error("Error liking package:", error);
-    }
-  };
+  // const handleLike = async () => {
+  //   if (!packageData) return;
+  //   try {
+  //     const response = await fetch(`/api/packages/${id}/like`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+  //     if (response.ok) {
+  //       setPackageData(prev => prev ? {
+  //         ...prev,
+  //         likes: prev.isLiked ? prev.likes - 1 : prev.likes + 1,
+  //         isLiked: !prev.isLiked
+  //       } : null);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error liking package:", error);
+  //   }
+  // };
 
-  const handleComment = async () => {
-    if (!newComment.trim() || !packageData) return;
-    setIsSubmitting(true);
-    try {
-      const response = await fetch(`/api/packages/${id}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ comment: newComment }),
-      });
-      if (response.ok) {
-        const newCommentData = await response.json();
-        setPackageData(prev => prev ? {
-          ...prev,
-          comments: [...prev.comments, newCommentData]
-        } : null);
-        setNewComment("");
-      }
-    } catch (error) {
-      console.error("Error posting comment:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // const handleComment = async () => {
+  //   if (!newComment.trim() || !packageData) return;
+  //   setIsSubmitting(true);
+  //   try {
+  //     const response = await fetch(`/api/packages/${id}/comments`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ comment: newComment }),
+  //     });
+  //     if (response.ok) {
+  //       const newCommentData = await response.json();
+  //       setPackageData(prev => prev ? {
+  //         ...prev,
+  //         comments: [...prev.comments, newCommentData]
+  //       } : null);
+  //       setNewComment("");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error posting comment:", error);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
   useEffect(() => {
     if (packageData) {
