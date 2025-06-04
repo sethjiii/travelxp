@@ -21,10 +21,10 @@ const AdminTravelPackage = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    price: "",
+    //price: "",
     places: "",
     cityId: [],
-    currency: "USD",
+    //currency: "USD",
     duration: "",
     itinerary: [
       {
@@ -88,13 +88,13 @@ const AdminTravelPackage = () => {
       itinerary: prev.itinerary.map((day, idx) =>
         idx === dayIndex
           ? {
-              ...day,
-              activities: day.activities.map((activity, actIdx) =>
-                actIdx === activityIndex
-                  ? { ...activity, [field]: value }
-                  : activity
-              ),
-            }
+            ...day,
+            activities: day.activities.map((activity, actIdx) =>
+              actIdx === activityIndex
+                ? { ...activity, [field]: value }
+                : activity
+            ),
+          }
           : day
       ),
     }));
@@ -130,16 +130,16 @@ const AdminTravelPackage = () => {
       itinerary: prev.itinerary.map((day, idx) =>
         idx === dayIndex
           ? {
-              ...day,
-              activities: [
-                ...day.activities,
-                {
-                  name: "",
-                  time: "",
-                  additionalDetails: "",
-                },
-              ],
-            }
+            ...day,
+            activities: [
+              ...day.activities,
+              {
+                name: "",
+                time: "",
+                additionalDetails: "",
+              },
+            ],
+          }
           : day
       ),
     }));
@@ -152,11 +152,11 @@ const AdminTravelPackage = () => {
       itinerary: prev.itinerary.map((day, idx) =>
         idx === dayIndex
           ? {
-              ...day,
-              activities: day.activities.filter(
-                (_, actIdx) => actIdx !== activityIndex
-              ),
-            }
+            ...day,
+            activities: day.activities.filter(
+              (_, actIdx) => actIdx !== activityIndex
+            ),
+          }
           : day
       ),
     }));
@@ -268,11 +268,10 @@ const AdminTravelPackage = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${
-                  activeTab === tab.id
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${activeTab === tab.id
                     ? "bg-blue-500 text-white"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
+                  }`}
               >
                 <tab.icon className="h-4 w-4" />
                 <span>{tab.label}</span>
@@ -308,38 +307,37 @@ const AdminTravelPackage = () => {
                     className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     required
                   />
-<div className="mb-4">
-  <label className="block font-medium mb-1 text-sm text-gray-700">Select Cities:</label>
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-    {cityList.map((city) => (
-      <label
-        key={city._id}
-        className={`flex items-center gap-1 px-2 py-1 border rounded-md text-sm cursor-pointer transition ${
-          formData.cityId.includes(city._id)
-            ? 'bg-blue-100 border-blue-500 text-blue-800 font-medium'
-            : 'hover:bg-gray-100'
-        }`}
-      >
-        <input
-          type="checkbox"
-          value={city._id}
-          checked={formData.cityId.includes(city._id)}
-          onChange={() => {
-            const selected = formData.cityId.includes(city._id);
-            setFormData((prev) => ({
-              ...prev,
-              cityId: selected
-                ? prev.cityId.filter((id) => id !== city._id)
-                : [...prev.cityId, city._id],
-            }));
-          }}
-          className="accent-blue-500 h-4 w-4"
-        />
-        <span>{city.city}</span>
-      </label>
-    ))}
-  </div>
-</div>
+                  <div className="mb-4">
+                    <label className="block font-medium mb-1 text-sm text-gray-700">Select Cities:</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                      {cityList.map((city) => (
+                        <label
+                          key={city._id}
+                          className={`flex items-center gap-1 px-2 py-1 border rounded-md text-sm cursor-pointer transition ${formData.cityId.includes(city._id)
+                              ? 'bg-blue-100 border-blue-500 text-blue-800 font-medium'
+                              : 'hover:bg-gray-100'
+                            }`}
+                        >
+                          <input
+                            type="checkbox"
+                            value={city._id}
+                            checked={formData.cityId.includes(city._id)}
+                            onChange={() => {
+                              const selected = formData.cityId.includes(city._id);
+                              setFormData((prev) => ({
+                                ...prev,
+                                cityId: selected
+                                  ? prev.cityId.filter((id) => id !== city._id)
+                                  : [...prev.cityId, city._id],
+                              }));
+                            }}
+                            className="accent-blue-500 h-4 w-4"
+                          />
+                          <span>{city.city}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
 
 
 
@@ -360,7 +358,7 @@ const AdminTravelPackage = () => {
 
                   <div className="grid grid-cols-3 gap-4">
                     <div className="relative">
-                      <IndianRupee className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                      {/* <IndianRupee className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <input
                         type="number"
                         placeholder="Price"
@@ -373,10 +371,10 @@ const AdminTravelPackage = () => {
                         }
                         className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                         required
-                      />
+                      /> */}
                     </div>
 
-                    <select
+                    {/* <select
                       value={formData.currency}
                       onChange={(e) =>
                         setFormData((prev) => ({
@@ -387,7 +385,7 @@ const AdminTravelPackage = () => {
                       className="px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     >
                       <option value="INR">INR</option>
-                    </select>
+                    </select> */}
 
                     <input
                       placeholder="Duration (e.g., 7 days, 6 nights)"
@@ -716,8 +714,8 @@ const AdminTravelPackage = () => {
                     activeTab === "basic"
                       ? "basic"
                       : activeTab === "details"
-                      ? "basic"
-                      : "details"
+                        ? "basic"
+                        : "details"
                   )
                 }
                 className="px-4 py-2 border rounded-md hover:bg-gray-50"

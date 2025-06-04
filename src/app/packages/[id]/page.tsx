@@ -7,10 +7,10 @@ import Image from "next/image";
 import {  CalendarArrowDown, CalendarArrowUp, Check, CheckCircle, ListCheck,  ListXIcon, Rocket, Sparkles, User, X } from "lucide-react";
 
 // Interfaces remain the same as your original code
-type Availability = {
-  startDate: string;
-  endDate: string;
-};
+// type Availability = {
+//   startDate: string;
+//   endDate: string;
+// };
 
 
 
@@ -51,8 +51,10 @@ interface TravelPackage {
   _id: string;
   name: string;
   description: string;
-  price: number;
-  currency: string;
+  
+  //price: number;
+  //currency: string;
+
   duration: string;
   highlights: string[];
   itinerary: ItineraryItem[];
@@ -66,7 +68,7 @@ interface TravelPackage {
   item: string;
   exclusions: string[];
   inclusions: string[];
-  availability: Availability;
+  //availability: Availability;
 }
 
 const TravelPackageDisplay = () => {
@@ -225,10 +227,10 @@ const TravelPackageDisplay = () => {
               <span className="text-xl">⏱</span>
               <span className="text-sm md:text-base sm:font-medium">{packageData.duration}</span>
             </div>
-            <div className="flex items-center gap-2 sm:px-5 sm:py-2 px-2 py-0 bg-gradient-to-br from-green-500/30 to-green-800/30 text-white border border-white/20 backdrop-blur-md rounded-full shadow-md transition-transform hover:scale-105 hover:shadow-lg">
+            {/* <div className="flex items-center gap-2 sm:px-5 sm:py-2 px-2 py-0 bg-gradient-to-br from-green-500/30 to-green-800/30 text-white border border-white/20 backdrop-blur-md rounded-full shadow-md transition-transform hover:scale-105 hover:shadow-lg">
               <span className="text-xl">💰</span>
               <span className="text-sm md:text-base font-medium">Rs. {packageData.price}</span>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -259,19 +261,19 @@ const TravelPackageDisplay = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             <CalendarArrowUp className="text-green-600 w-5 h-5 sm:w-6 sm:h-6" />
             <p className="text-gray-500">Start:</p>
-            <p className="font-medium text-gray-800">
+            {/* <p className="font-medium text-gray-800">
               {new Date(packageData.availability.startDate).toLocaleDateString()}
-            </p>
+            </p> */}
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <CalendarArrowDown className="text-red-600 w-5 h-5 sm:w-6 sm:h-6" />
             <p className="text-gray-500">End:</p>
-            <p className="font-medium text-gray-800">
+            {/* <p className="font-medium text-gray-800">
               {new Date(packageData.availability.endDate).toLocaleDateString()}
-            </p>
+            </p> */}
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           {new Date(packageData.availability.startDate) <= new Date() &&
             new Date(packageData.availability.endDate) >= new Date() ? (
             <span className="px-2 sm:px-4 py-1 sm:py-2 rounded-full bg-green-200 text-green-700 font-medium text-xs sm:text-sm flex text-center items-center gap-1">
@@ -282,7 +284,7 @@ const TravelPackageDisplay = () => {
               Not Available
             </span>
           )}
-        </div>
+        </div> */}
       </div>
 
 

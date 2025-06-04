@@ -31,8 +31,8 @@ export default async function handler(req, res) {
       name,
       description,
       itinerary,
-      price,
-      currency,
+      // price,
+      // currency,
       duration,
       highlights,
       inclusions,
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
     console.log(req.body.cityId)
     if (
-      !name || !description || !price || !duration || !currency ||
+      !name || !description || !duration ||
       !Array.isArray(cityId) || cityId.length === 0
     ) {
       return res.status(400).json({ error: 'Missing or invalid required fields' });
@@ -70,8 +70,8 @@ export default async function handler(req, res) {
       name,
       description,
       itinerary,
-      price,
-      currency,
+      // price,
+      // currency,
       duration,
       highlights,
       inclusions,

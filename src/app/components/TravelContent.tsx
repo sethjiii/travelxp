@@ -28,7 +28,7 @@ interface TravelPackage {
   _id: number;
   title: string;
   description: string;
-  price: number;
+  //price: number;
   duration: string;
   highlights: string[];
   images: string[];
@@ -77,7 +77,7 @@ const testimonials: Testimonial[] = [
 
 const TravelContent = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [priceRange, setPriceRange] = useState<string>("all");
+ // const [priceRange, setPriceRange] = useState<string>("all");
   const [packages, setPackages] = useState<TravelPackage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -163,13 +163,13 @@ const TravelContent = () => {
           highlight.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
-      let matchesPrice = true;
-      if (priceRange !== "all") {
-        const [min, max] = priceRange.split("-").map(Number);
-        matchesPrice = pkg.price >= min && (max ? pkg.price <= max : true);
-      }
+      // let matchesPrice = true;
+      // if (priceRange !== "all") {
+      //   const [min, max] = priceRange.split("-").map(Number);
+      //   matchesPrice = pkg.price >= min && (max ? pkg.price <= max : true);
+      // }
 
-      return matchesSearch && matchesPrice;
+      return matchesSearch; //&& matchesPrice;
     });
   };
 
@@ -183,14 +183,17 @@ const TravelContent = () => {
     <div className="max-w-7xl mx-auto">
       {/* Enhanced Hero Section */}
       <section className="relative h-[600px] overflow-hidden">
-        <img
-          src="11.jpeg"
-          alt="Travel Hero"
-          className="w-full h-full object-cover"
-        />
+         <video
+      src="/hero-section.mp4"  // put the video inside /public
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="absolute top-0 left-0 w-full h-full object-cover"
+    />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 flex items-center">
           <div className="text-white px-8 md:px-16 max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold  mb-4">
               Discover Your Next Adventure
             </h1>
             <p className="text-lg md:text-xl mb-8">
@@ -244,17 +247,17 @@ const TravelContent = () => {
               </div>
 
               {/* Price Range Filter */}
-              <select
+              {/* <select
                 className="py-3 px-4 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-600"
                 value={priceRange}
                 onChange={(e) => setPriceRange(e.target.value)}
-              >
-                <option value="all">All Prices</option>
+              > */}
+                {/* <option value="all">All Prices</option>
                 <option value="0-1000">Under $1,000</option>
                 <option value="1001-2000">$1,001 - $2,000</option>
                 <option value="2001-3000">$2,001 - $3,000</option>
                 <option value="3001">Above $3,000</option>
-              </select>
+              </select> */}
 
               {/* Sort By */}
               <select
@@ -263,8 +266,8 @@ const TravelContent = () => {
                 onChange={(e) => setSortBy(e.target.value)}
               >
                 <option value="popularity">Sort by Popularity</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
+                {/* <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option> */}
                 <option value="duration">Duration</option>
               </select>
             </div>
@@ -345,10 +348,10 @@ const TravelContent = () => {
                   <div className="flex justify-between items-end w-full mt-auto pt-1">
                     <h2 className="text-2xl  font-semibold font-sans tracking-wider">{pkg.name}</h2>
 
-                    <div className="flex items-center text-yellow-600  text-2xl font-bold tracking-wide">
+                    {/* <div className="flex items-center text-yellow-600  text-2xl font-bold tracking-wide">
                       <IndianRupee className="text-xl" />
                       <span>{pkg.price}</span>
-                    </div>
+                    </div> */}
                   </div>
 
                 </div>
@@ -441,9 +444,9 @@ const TravelContent = () => {
 
                   {/* Price */}
                   <div className="flex items-center justify-between text-gray-800 mb-2">
-                    <span className="text-blue-600 font-bold text-sm">
+                    {/* <span className="text-blue-600 font-bold text-sm">
                       ${pkg.price}
-                    </span>
+                    </span> */}
                     <span className="flex items-center gap-1 text-xs text-gray-500">
                       <Clock className="h-4 w-4 text-gray-400" />
                       {pkg.duration}

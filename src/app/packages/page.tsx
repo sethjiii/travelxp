@@ -12,8 +12,8 @@ interface Package {
   duration: string;
   places: string;
   description: string;
-  price: number;
-  currency: string;
+  //price: number;
+  //currency: string;
   rating: number;
   images: string[];
 }
@@ -92,7 +92,7 @@ const AllPackagesPage = () => {
   <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
     <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500 mb-6"></div>
     <div className="text-black tracking-widest text-2xl text-center font-mono px-4">
-      Hold onn... We Are Fetching the Best Combination of Adventure For You...
+      Hold onn... We Are Fetching the Best Combination of Luxury Travel For You...
     </div>
   </div>
 )}
@@ -122,10 +122,10 @@ const AllPackagesPage = () => {
                   <div className="flex justify-between items-end w-full mt-auto pt-1">
                     <h2 className="text-2xl  font-semibold font-sans tracking-wider">{pkg.name}</h2>
 
-                    <div className="flex items-center text-yellow-600  text-2xl font-bold tracking-wide">
+                    {/* <div className="flex items-center text-yellow-600  text-2xl font-bold tracking-wide">
                       <IndianRupee className="text-xl" />
                       <span>{pkg.price}</span>
-                    </div>
+                    </div> */}
                   </div>
 
                 </div>
